@@ -39,7 +39,7 @@ class Settings(BaseSettings):
         env_nested_delimiter="__",
         env_prefix="FASTAPI__",
         env_file=(
-            BASE_DIR / ".env.template",
+            BASE_DIR / ".env_template",
             BASE_DIR / ".env",
         ),
     )
