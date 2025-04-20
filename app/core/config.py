@@ -8,7 +8,7 @@ BASE_DIR = Path(__file__).parent.parent.parent
 
 
 class ApiPrefix(BaseModel):
-    prefix: str = "/forktech"
+    prefix: str = "/forkytech"
     tron: str = "/tron"
 
 

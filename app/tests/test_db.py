@@ -9,7 +9,9 @@ DATABASE_URL = "sqlite+aiosqlite:///:memory:"
 
 engine = create_async_engine(DATABASE_URL)
 TestingSessionLocal = sessionmaker(
-    bind=engine, class_=AsyncSession, expire_on_commit=False
+    bind=engine,
+    class_=AsyncSession,
+    expire_on_commit=False,
 )
 
 
@@ -18,7 +20,9 @@ async def test_create_tron_request():
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
 
-    async with TestingSessionLocal() as db:
-        wallet = TronRequestCreate(wallet_address="TXYZ...1234")
-        created = await create_tron_request(db, wallet)
-        assert created.wallet_address == "TXYZ...1234"
+    async with TestingSessionLocal() as session:
+        wallet = TronRequestCreate(
+            wallet_address="TKn55gKbKeK6UcWEKPhupkVEFkxu3Q1nkA"
+        )
+        created = await create_tron_request(session, wallet)
+        assert created.wallet_address == "TKn55gKbKeK6UcWEKPhupkVEFkxu3Q1nkA"
