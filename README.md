@@ -56,11 +56,11 @@ uvicorn app.main:main_app --reload
 
 ## Эндпоинты
  - POST /forkytech/tron/wallet_info
-    Пример запроса:
+   - Пример запроса:
     {
         "address": "TXYZ1234567890"
     }
-    Пример ответа:
+  -  Пример ответа:
     {
         "address": "TXYZ1234567890",
         "balance": 123.45,
@@ -68,7 +68,7 @@ uvicorn app.main:main_app --reload
         "energy": 10000
     }
  - GET /forkytech/tron/requests?skip=0&limit=10
-    Пример ответа:
+   - Пример ответа:
     [
         {
             "id": 1,
