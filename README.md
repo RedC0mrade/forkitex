@@ -60,7 +60,7 @@ uvicorn app.main:main_app --reload
     {
         "address": "TXYZ1234567890"
     }
-  -  Пример ответа:
+   - Пример ответа:
     {
         "address": "TXYZ1234567890",
         "balance": 123.45,
