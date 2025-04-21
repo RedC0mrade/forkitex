@@ -1,13 +1,11 @@
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy import select
 from app.core.models.tron import TronRequest
-from app.schemas.tron import TronRequestCreate
+from app.schemas.tron import WalletCreate
 
 
-async def create_tron_request(
-    session: AsyncSession, request: TronRequestCreate
-):
-    db_request = TronRequest(wallet_address=request.wallet_address)
+async def create_tron_request(session: AsyncSession, wallet: WalletCreate):
+    db_request = TronRequest(wallet_address=wallet.wallet_address)
     session.add(db_request)
     await session.commit()
     await session.refresh(db_request)

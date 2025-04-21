@@ -3,9 +3,9 @@ from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.core.config import settings
 from app.schemas.tron import (
-    TronInfo,
-    TronRequestCreate,
-    TronRequestOut,
+    WalletInfo,
+    WalletCreate,
+    WalletOut,
 )
 from app.services.tron import get_wallet_info
 from app.crud.tron import get_requests, create_tron_request
@@ -14,16 +14,16 @@ from app.core.factories.database import db_helper
 router = APIRouter(prefix=settings.api.tron, tags=["tron"])
 
 
-@router.post("/wallet_info", response_model=TronInfo)
+@router.post("/wallet_info", response_model=WalletInfo)
 async def get_wallet_information(
-    request: TronRequestCreate,
+    wallet: WalletCreate,
     session: AsyncSession = Depends(db_helper.session_getter),
 ):
-    await create_tron_request(session=session, request=request)
-    return await get_wallet_info(request.wallet_address)
+    await create_tron_request(session=session, wallet=wallet)
+    return await get_wallet_info(wallet.wallet_address)
 
 
-@router.get("/requests", response_model=list[TronRequestOut])
+@router.get("/requests", response_model=list[WalletOut])
 async def read_requests(
     skip: int = 0,
     limit: int = 10,

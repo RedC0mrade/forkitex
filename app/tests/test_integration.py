@@ -1,32 +1,22 @@
+from fastapi.testclient import TestClient
+from app.main import main_app
 import pytest
-from httpx import AsyncClient, ASGITransport
-from unittest.mock import patch, AsyncMock
 
-from app.main import main_app  # или актуальный путь к FastAPI-приложению
+client = TestClient(main_app)
 
 
 @pytest.mark.asyncio
-async def test_wallet_info_and_get_requests():
-    mocked_wallet_info = {
-        "balance": 123.45,
-        "bandwidth": 1000,
-        "energy": 500,
-    }
+async def test_get_wallet_information():
+    request_data = {"wallet_address": "TDQT4KKSEdJwAaGvkXFHkX61Fo1soLCxo4"}
 
-    with patch(
-        "app.services.tron.get_wallet_info",
-        new=AsyncMock(return_value=mocked_wallet_info),
-    ):
-        transport = ASGITransport(app=main_app)
-        async with AsyncClient(
-            transport=transport, base_url="http://test"
-        ) as ac:
-            response = await ac.get("/wallet/info/TTestAddress123")
+    response = client.post("/forkytech/tron/wallet_info", json=request_data)
 
-        assert response.status_code == 200
-        assert response.json() == {
-            "balance": 123.45,
-            "bandwidth": 1000,
-            "energy": 500,
-            "address": "TTestAddress123",
-        }
+    assert response.status_code == 200
+
+    response_data = response.json()
+    assert "balance" in response_data
+    assert "bandwidth" in response_data
+    assert "energy" in response_data
+    assert isinstance(response_data["balance"], float)
+    assert isinstance(response_data["bandwidth"], int)
+    assert isinstance(response_data["energy"], int)
